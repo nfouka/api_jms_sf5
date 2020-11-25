@@ -4,9 +4,11 @@ namespace App\Entity;
 
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
+ * @Serializer\ExclusionPolicy("ALL")
  */
 class Article
 {
@@ -19,11 +21,13 @@ class Article
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Serializer\Expose
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
+     * @Serializer\Expose
      */
     private $content;
 
