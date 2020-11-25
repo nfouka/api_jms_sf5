@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use JMS\Serializer\SerializationContext ;
 
 class HelloController extends AbstractController
 {
@@ -38,7 +39,7 @@ class HelloController extends AbstractController
             ->setContent('Le contenu de mon article.')
         ;
 
-        $data = $this->serialize->serialize($article, 'json');
+        $data = $this->serialize->serialize($article, 'json' , SerializationContext::create()->setGroups(array('detail')) );
         $response = new Response($data);
         $response->headers->set('Content-Type', 'application/json');
 
@@ -71,7 +72,7 @@ class HelloController extends AbstractController
     public function listAction()
     {
         $articles = $this->getDoctrine()->getRepository('App:Article')->findAll();
-        $data = $this->serialize->serialize($articles, 'json');
+        $data = $this->serialize->serialize($articles, 'json' , SerializationContext::create()->setGroups(array('list')) );
 
         $response = new Response($data , Response::HTTP_CREATED );
         $response->headers->set('Content-Type', 'application/json');
