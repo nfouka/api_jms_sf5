@@ -27,17 +27,23 @@ class HelloController extends AbstractController
 
 
     /**
-     * @Route("/articles/{id}", name="article_show")
+     * @Route("/article/{id}", name="article_show")
      */
-    public function showAction()
+    public function showAction(Request $request)
     {
 
 
-        $article = new Article();
-        $article
-            ->setTitle('Mon premier article')
-            ->setContent('Le contenu de mon article.')
-        ;
+        $article = $this->getDoctrine()->getRepository('App:Article')->find( $request->get('id') ) ;
+
+        if(!$article) {
+            return  new JsonResponse(
+                    array(
+                        'message' => 'Not found',
+                        'code'    => Response::HTTP_BAD_REQUEST
+                    )
+                , Response::HTTP_BAD_REQUEST
+            );
+        }
 
         $data = $this->serialize->serialize($article, 'json' , SerializationContext::create()->setGroups(array('detail')) );
         $response = new Response($data);
@@ -72,6 +78,7 @@ class HelloController extends AbstractController
     public function listAction()
     {
         $articles = $this->getDoctrine()->getRepository('App:Article')->findAll();
+
         $data = $this->serialize->serialize($articles, 'json' , SerializationContext::create()->setGroups(array('list')) );
 
         $response = new Response($data , Response::HTTP_CREATED );

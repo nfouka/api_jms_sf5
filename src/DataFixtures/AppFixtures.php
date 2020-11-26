@@ -19,8 +19,8 @@ class AppFixtures extends Fixture
 
         for ($i = 0; $i < 50; $i++) {
             $customer = new Article();
-            $customer->setTitle( $lipsum->words(10) );
-            $customer->setContent( $lipsum->paragraphs(50) ) ;
+            $customer->setTitle( $lipsum->words(5) );
+            $customer->setContent( $lipsum->paragraphs(2) ) ;
             $manager->persist($customer);
         }
 
