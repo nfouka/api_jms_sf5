@@ -22,13 +22,12 @@ class ArticleListener implements EventSubscriberInterface
         ];
     }
 
-    public static function onPostSerialize(ObjectEvent $event)
+    public function onPostSerialize(ObjectEvent $event)
     {
 
         $date = new \Datetime();
         $event->getVisitor()->visitProperty(new StaticPropertyMetadata('Article', 'delivered_at', null), $date->format('l jS \of F Y h:i:s A'));
     }
 }
-
 
 
